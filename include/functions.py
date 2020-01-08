@@ -252,8 +252,8 @@ def CardName(BinaryImg, horiBoundaryCoor, origin=None):
     :param origin:
     :return:coors, text
     """
-
-
+   
+    origin = BinaryImg # 强制修改为黑白的，这样更好用
     coors = _chineseCharHandle(BinaryImg, horiBoundaryCoor)
     if len((coors)) == 0:
         return coors, ''
@@ -265,6 +265,8 @@ def CardName(BinaryImg, horiBoundaryCoor, origin=None):
     text = ''
     if type(origin) == np.ndarray:
         cropImg, _, _, _ = cropImgByBox(origin, box)
+      
+        cropImg = cv2.copyMakeBorder(cropImg, 15, 15, 15, 15, cv2.BORDER_CONSTANT, value=[255, 255, 255])
         text = ocr(cropImg, 'chi_sim', '7')
 
     return coors, text.replace(' ', '')
@@ -480,7 +482,8 @@ def CardAddress(BinaryImg, horiBoundaryCoor, origin=None):
     :param horiBoundaryCoor:
     :return:
     """
-
+   
+    origin = BinaryImg
     coors = _chineseCharHandle(BinaryImg, horiBoundaryCoor)
     up, down = horiBoundaryCoor
 
@@ -489,6 +492,8 @@ def CardAddress(BinaryImg, horiBoundaryCoor, origin=None):
     text = ''
     if type(origin) == np.ndarray:
         cropImg, _, _, _ = cropImgByBox(origin, box)
+      
+        cropImg = cv2.copyMakeBorder(cropImg, 15, 15, 15, 15, cv2.BORDER_CONSTANT, value=[255, 255, 255])
         text = ocr(cropImg, 'chi_sim', '7')
 
     return coors, text.replace(' ', '')
